@@ -1,4 +1,5 @@
 {
+  "name": "lean-book-tools/phpunit-cleaner-result-printer",
   "autoload": {
     "psr-4": {
       "LeanBookTools\\": "src/"
