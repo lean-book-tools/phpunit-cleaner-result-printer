@@ -1,0 +1,16 @@
+{
+  "autoload": {
+    "psr-4": {
+      "LeanBookTools\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "LeanBookTools\\Test\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^8.0",
+    "phpunit/phpunit": "^9.5"
+  }
+}
