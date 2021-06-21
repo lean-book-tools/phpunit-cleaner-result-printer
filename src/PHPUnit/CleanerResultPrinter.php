@@ -39,7 +39,7 @@ final class CleanerResultPrinter extends DefaultResultPrinter
         $testName = str_replace($testClass, $simpleClassName, $testName);
 
         // Remove dump of data set (e.g. SmartFileInfo)
-        $testName = preg_replace('/(data sets #(\d+)).+/', '$1', $testName);
+        $testName = preg_replace('/(data set #(\d+)).+/', '$1', $testName);
 
         return trim($testName, ' ');
     }
