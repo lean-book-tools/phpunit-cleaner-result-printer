@@ -38,8 +38,8 @@ final class CleanerResultPrinter extends DefaultResultPrinter
         // Strip the namespace from the test class
         $testName = str_replace($testClass, $simpleClassName, $testName);
 
-        // Remove confusing SmartFileInfo object which is part of the data set
-        $testName = str_replace('(Symplify\SmartFileSystem\SmartFileInfo Object (...))', '', $testName);
+        // Remove dump of data set (e.g. SmartFileInfo)
+        $testName = preg_replace('/(data sets #(\d+)).+/', '$1', $testName);
 
         return trim($testName, ' ');
     }

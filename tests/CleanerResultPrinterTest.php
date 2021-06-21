@@ -47,7 +47,7 @@ CODE_SAMPLE;
         self::assertEquals(
             'MigrateToDateTimeImmutableRectorTest::test with data sets #1',
             $this->cleanerResultPrinter->cleanUpTestName(
-                'MoreTestingTechniques\Ruleset\Version5\Utils\Rector\Tests\Rector\MigrateToDateTimeImmutableRector\MigrateToDateTimeImmutableRectorTest::test with data sets #1 (Symplify\SmartFileSystem\SmartFileInfo Object (...))'
+                'MoreTestingTechniques\Ruleset\Version5\Utils\Rector\Tests\Rector\MigrateToDateTimeImmutableRector\MigrateToDateTimeImmutableRectorTest::test with data sets #1 (RectorPrefix20210613\Symplify\SmartFileSystem\SmartFileInfo Object (...))'
             )
         );
     }
