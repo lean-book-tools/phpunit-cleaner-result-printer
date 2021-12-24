@@ -37,7 +37,7 @@ Failed asserting that two strings are equal.
 /app/vendor/rector/rector/packages/Testing/PHPUnit/AbstractRectorTestCase.php:111
 /app/vendor/rector/rector/packages/Testing/PHPUnit/AbstractRectorTestCase.php:95
 /app/manuscript-src/resources/src/MoreTestingTechniques/Ruleset/Version5/utils/rector/tests/Rector/MigrateToDateTimeImmutableRector/MigrateToDateTimeImmutableRectorTest.php:18
-vendor/phpunit/phpunit/phpunit:61
+/app/vendor/phpunit/phpunit/phpunit:61
 CODE_SAMPLE;
 
         self::assertEquals($expected, $this->cleanerResultPrinter->cleanUpExceptionMessage($trace));

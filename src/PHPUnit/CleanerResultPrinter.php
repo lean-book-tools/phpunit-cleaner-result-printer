@@ -49,7 +49,7 @@ final class CleanerResultPrinter extends DefaultResultPrinter
         // remove directory from file paths
         $lines = explode("\n", $message);
         foreach ($lines as $key => $line) {
-            if (str_starts_with($line, 'vendor/phpunit')) {
+            if (str_contains($line, 'vendor/phpunit')) {
                 unset($lines[$key]);
                 continue;
             }
