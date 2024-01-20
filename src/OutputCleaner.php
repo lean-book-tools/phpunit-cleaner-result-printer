@@ -9,9 +9,6 @@ namespace LeanBookTools;
  */
 final class OutputCleaner
 {
-    // @todo Override the line length, to make the output fit the book pages
-    // parent::__construct($out, $verbose, $colors, $debug, 70, false);
-
     public static function cleanUpExceptionMessage(string $message): string
     {
         // remove directory from file paths
