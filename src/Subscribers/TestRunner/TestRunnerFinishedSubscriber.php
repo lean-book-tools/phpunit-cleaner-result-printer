@@ -105,19 +105,19 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
      */
     private function createTitle(Test $test): string
     {
-        if ($test instanceof TestMethod) {
-            $shortClassName = ClassNaming::resolveShortClassName($test->className());
-
-            if (! $test->testData()->hasDataFromDataProvider()) {
-                return $shortClassName . '::' . $test->methodName();
-            }
-
-            $dataFromDataProvider = $test->testData()->dataFromDataProvider();
-            $dataProviderString = 'with data set #' . $dataFromDataProvider->dataSetName();
-
-            return $shortClassName . '::' . $test->methodName() . ' ' . $dataProviderString;
+        if (! $test instanceof TestMethod) {
+            return $test->name();
         }
 
-        return $test->name();
+        $shortClassName = ClassNaming::resolveShortClassName($test->className());
+
+        $title = $shortClassName . '::' . $test->methodName();
+
+        if ($test->testData()->hasDataFromDataProvider()) {
+            $dataFromDataProvider = $test->testData()->dataFromDataProvider();
+            $title .= ' with data set #' . $dataFromDataProvider->dataSetName();
+        }
+
+        return $title;
     }
 }
