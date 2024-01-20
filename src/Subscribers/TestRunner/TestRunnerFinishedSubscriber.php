@@ -28,12 +28,10 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
         $testResult = Facade::result();
 
         // no tests were run
-        if ($testResult->numberOfTestsRun() === 0) {
-            return;
+        if ($testResult->numberOfTestsRun() !== 0) {
+            $this->simplePrinter->newLine(2);
+            $this->simplePrinter->writeln(self::TIME_AND_MEMORY_PLACEHOLDER);
         }
-
-        $this->simplePrinter->newLine(2);
-        $this->simplePrinter->writeln(self::TIME_AND_MEMORY_PLACEHOLDER);
 
         if ($testResult->hasTestFailedEvents()) {
             $this->printListHeaderWithNumber($testResult->numberOfTestFailedEvents(), 'failure');
