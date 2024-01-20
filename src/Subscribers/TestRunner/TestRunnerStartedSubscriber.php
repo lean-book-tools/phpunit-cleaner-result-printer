@@ -14,6 +14,6 @@ final class TestRunnerStartedSubscriber extends AbstractSubscriber implements St
     public function notify(Started $event): void
     {
         // starting message is printed by PHPUnit itself
-        $this->simplePrinter->writeln(Version::getVersionString() . PHP_EOL);
+        $this->simplePrinter->writeln('PHPUnit ' . Version::id() . PHP_EOL);
     }
 }
