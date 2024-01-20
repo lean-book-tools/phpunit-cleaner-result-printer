@@ -33,7 +33,7 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
 
             $this->simplePrinter->newLine();
             $this->simplePrinter->writeln(sprintf(
-                '%d / %d (%.0f %%)',
+                '%d / %d (%.0f%%)',
                 $successTestCount,
                 $testResult->numberOfTestsRun(),
                 100 * ($successTestCount / $testResult->numberOfTestsRun())
