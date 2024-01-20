@@ -1,5 +1,6 @@
 {
     "name": "tomasvotruba/phpunit-book-format",
+    "description": "PHPUnit result printer for books - simple and short",
     "license": "MIT",
     "require": {
         "php": "^8.2",
