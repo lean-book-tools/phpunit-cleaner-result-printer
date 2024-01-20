@@ -1,5 +1,5 @@
 {
-    "name": "lean-book-tools/phpunit-cleaner-result-printer",
+    "name": "tomasvotruba/phpunit-book-format",
     "license": "MIT",
     "require": {
         "php": "^8.2",
