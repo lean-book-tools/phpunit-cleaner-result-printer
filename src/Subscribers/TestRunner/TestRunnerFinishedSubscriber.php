@@ -34,14 +34,13 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
 
         $this->simplePrinter->newLine(2);
         $this->simplePrinter->writeln(self::TIME_AND_MEMORY_PLACEHOLDER);
-        $this->simplePrinter->newLine();
 
         if ($testResult->hasTestFailedEvents()) {
             $this->printListHeaderWithNumber($testResult->numberOfTestFailedEvents(), 'failure');
             $this->printTestFailedEvents($testResult->testFailedEvents());
         }
 
-        $summaryPrinter = new SummaryPrinter(DefaultPrinter::standardOutput(), true);
+        $summaryPrinter = new SummaryPrinter(DefaultPrinter::standardOutput(), false);
         $summaryPrinter->print($testResult);
     }
 
