@@ -27,9 +27,22 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
     {
         $testResult = Facade::result();
 
+        // simple progress report
+        if ($testResult->numberOfTestsRun() !== 0) {
+            $successTestCount = $testResult->numberOfTestsRun() - $testResult->numberOfTestErroredEvents();
+
+            $this->simplePrinter->newLine();
+            $this->simplePrinter->writeln(sprintf(
+                '%d / %d (%.2f %%)',
+                $successTestCount,
+                $testResult->numberOfTestsRun(),
+                100 * ($successTestCount / $testResult->numberOfTestsRun())
+            ));
+        }
+
         // no tests were run
         if ($testResult->numberOfTestsRun() !== 0) {
-            $this->simplePrinter->newLine(2);
+            $this->simplePrinter->newLine(1);
             $this->simplePrinter->writeln(self::TIME_AND_MEMORY_PLACEHOLDER);
         }
 

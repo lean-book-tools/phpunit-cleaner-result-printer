@@ -51,6 +51,7 @@ final class CleanerResultPrinterExtension implements Extension
             new TestErroredSubscriber($this->simplePrinter, $this->testResultCollector),
             new TestFinishedSubscriber($this->simplePrinter, $this->testResultCollector),
             new TestPassedSubscriber($this->simplePrinter, $this->testResultCollector),
+
             // test runner
             new TestRunnerStartedSubscriber($this->simplePrinter, $this->testResultCollector),
             new TestRunnerFinishedSubscriber($this->simplePrinter, $this->testResultCollector),
