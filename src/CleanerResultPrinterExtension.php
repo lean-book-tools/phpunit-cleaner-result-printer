@@ -11,6 +11,7 @@ use LeanBookTools\Subscribers\Test\TestFinishedSubscriber;
 use LeanBookTools\Subscribers\Test\TestPassedSubscriber;
 use LeanBookTools\Subscribers\Test\TestPreparedSubscriber;
 use LeanBookTools\Subscribers\TestRunner\TestRunnerFinishedSubscriber;
+use LeanBookTools\Subscribers\TestRunner\TestRunnerStartedSubscriber;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Logging\TestDox\TestResultCollector;
 use PHPUnit\Runner\Extension\Extension;
@@ -44,11 +45,14 @@ final class CleanerResultPrinterExtension implements Extension
         $facade->replaceOutput();
 
         $facade->registerSubscribers(
+            // test
             new TestPreparedSubscriber($this->simplePrinter, $this->testResultCollector),
             new TestFailedSubscriber($this->simplePrinter, $this->testResultCollector),
             new TestErroredSubscriber($this->simplePrinter, $this->testResultCollector),
             new TestFinishedSubscriber($this->simplePrinter, $this->testResultCollector),
             new TestPassedSubscriber($this->simplePrinter, $this->testResultCollector),
+            // test runner
+            new TestRunnerStartedSubscriber($this->simplePrinter, $this->testResultCollector),
             new TestRunnerFinishedSubscriber($this->simplePrinter, $this->testResultCollector),
         );
     }
