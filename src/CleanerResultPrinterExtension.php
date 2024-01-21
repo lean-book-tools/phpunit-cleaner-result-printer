@@ -45,7 +45,7 @@ final class CleanerResultPrinterExtension implements Extension
         $facade->replaceOutput();
 
         $facade->registerSubscribers(
-            // test
+            // single test
             new TestPreparedSubscriber($this->simplePrinter, $this->testResultCollector),
             new TestFailedSubscriber($this->simplePrinter, $this->testResultCollector),
             new TestErroredSubscriber($this->simplePrinter, $this->testResultCollector),
