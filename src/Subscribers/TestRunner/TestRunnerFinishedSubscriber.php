@@ -39,12 +39,12 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
             ));
         }
 
-        // no tests were run
         if ($testResult->numberOfTestsRun() !== 0) {
             $this->simplePrinter->newLine(1);
             $this->simplePrinter->writeln(self::TIME_AND_MEMORY_PLACEHOLDER);
         }
 
+        // print failed tests
         if ($testResult->hasTestFailedEvents()) {
             $this->printListHeaderWithNumber($testResult->numberOfTestFailedEvents(), 'failure');
             $this->printTestFailedEvents($testResult->testFailedEvents());
