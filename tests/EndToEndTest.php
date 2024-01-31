@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
 final class EndToEndTest extends TestCase
@@ -26,16 +27,18 @@ final class EndToEndTest extends TestCase
     }
 
     #[DataProvider('namesProvider')]
-    public function testCompareOutputForSingleTestCases(string $testName): void
+    public function testCompareOutputForSingleTestCases(SplFileInfo $testFile): void
     {
-        $output = $this->runPhpUnitWithCleanOutputForTest($testName);
-        $this->assertSame(file_get_contents(self::PROJECT_DIR . '/tests/' . $testName . '.output.txt'), $output);
+        $output = $this->runPhpUnitWithCleanOutputForTest($testFile->getPathname());
+        $outputFile = $testFile->getPath() . '/' . $testFile->getFilenameWithoutExtension() . '.output.txt';
+        $this->assertFileExists($outputFile, 'First create a file with the expected output');
+        $this->assertSame(file_get_contents($outputFile), $output);
     }
 
     public static function namesProvider(): Iterator
     {
-        foreach (Finder::create()->name('*Test.php')->in(self::PROJECT_DIR . '/tests') as $testFile) {
-            yield [$testFile->getFilenameWithoutExtension()];
+        foreach (Finder::create()->name('*Test.php')->in(self::PROJECT_DIR . '/tests/') as $testFile) {
+            yield [$testFile];
         }
     }
 
@@ -43,7 +46,6 @@ final class EndToEndTest extends TestCase
     {
         $process = new Process([
             'vendor/bin/phpunit',
-            '--filter',
             $testName,
         ], self::PROJECT_DIR);
         $process->run();
