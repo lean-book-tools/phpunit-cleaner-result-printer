@@ -1,0 +1,18 @@
+PHPUnit
+
+FF     2 / 2 (100%)
+
+There were 2 failures:
+
+1) MultipleFailedTest::testFailed1
+Failed asserting that false is true.
+
+MultipleFailedTest.php:13
+
+2) MultipleFailedTest::testFailed2
+Failed asserting that false is true.
+
+MultipleFailedTest.php:18
+
+FAILURES!
+Tests: 2, Assertions: 2, Failures: 2.

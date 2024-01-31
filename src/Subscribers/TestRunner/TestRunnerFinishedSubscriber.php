@@ -140,8 +140,7 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
 
         $this->simplePrinter->writeln(
             sprintf(
-                "%s%d) %s\n%s%s",
-                $number > 1 ? "\n" : '',
+                "%d) %s\n%s%s",
                 $number,
                 $title,
                 $cleanBody,
