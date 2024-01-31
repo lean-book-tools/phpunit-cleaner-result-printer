@@ -29,8 +29,8 @@ final class OutputCleanerTest extends TestCase
     public static function provideCleanUpExceptionMessageData(): Iterator
     {
         yield [
-            __DIR__ . '/Fixture/input_content.php.inc',
-            __DIR__ . '/Fixture/expected_content.php.inc',
+            __DIR__ . '/../fixture/input_content.php.inc',
+            __DIR__ . '/../fixture/expected_content.php.inc',
         ];
     }
 }
