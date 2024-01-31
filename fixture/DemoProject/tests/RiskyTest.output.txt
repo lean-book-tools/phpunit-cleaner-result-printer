@@ -1,0 +1,11 @@
+PHPUnit
+
+.     1 / 1 (100%)
+
+There was 1 risky test:
+
+1) RiskyTest::testNoAssertions
+This test did not perform any assertions
+
+OK, but there were issues!
+Tests: 1, Assertions: 0, Risky: 1.

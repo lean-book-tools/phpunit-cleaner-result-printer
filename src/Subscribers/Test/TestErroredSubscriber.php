@@ -12,7 +12,7 @@ final class TestErroredSubscriber extends AbstractSubscriber implements ErroredS
 {
     public function notify(Errored $event): void
     {
-        $this->simplePrinter->writeln('E');
+        $this->simplePrinter->write('E');
         $this->testResultCollector->testErrored($event);
     }
 }

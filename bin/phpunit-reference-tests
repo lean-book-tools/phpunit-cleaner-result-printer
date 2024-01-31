@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -eu
+
+cd fixture/DemoProject
+vendor/bin/phpunit --no-extensions "$@"

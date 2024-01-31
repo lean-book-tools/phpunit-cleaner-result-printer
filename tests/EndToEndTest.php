@@ -8,6 +8,7 @@ use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
 final class EndToEndTest extends TestCase
@@ -33,8 +34,9 @@ final class EndToEndTest extends TestCase
 
     public static function namesProvider(): Iterator
     {
-        yield ['SuccessfulTest'];
-        yield ['FailedTest'];
+        foreach (Finder::create()->name('*Test.php')->in(self::PROJECT_DIR . '/tests') as $testFile) {
+            yield [$testFile->getFilenameWithoutExtension()];
+        }
     }
 
     private function runPhpUnitWithCleanOutputForTest(string $testName): string
