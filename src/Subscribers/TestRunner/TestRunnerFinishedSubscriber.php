@@ -27,21 +27,30 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
     {
         $testResult = Facade::result();
 
-        // no tests were run
-        if ($testResult->numberOfTestsRun() === 0) {
-            return;
+        // simple progress report
+        if ($testResult->numberOfTestsRun() !== 0) {
+            $successTestCount = $testResult->numberOfTestsRun() - $testResult->numberOfTestErroredEvents();
+
+            $this->simplePrinter->writeln(sprintf(
+                '     %d / %d (%.0f%%)',
+                $successTestCount,
+                $testResult->numberOfTestsRun(),
+                100 * ($successTestCount / $testResult->numberOfTestsRun())
+            ));
         }
 
-        $this->simplePrinter->newLine(2);
-        $this->simplePrinter->writeln(self::TIME_AND_MEMORY_PLACEHOLDER);
-        $this->simplePrinter->newLine();
+        if ($testResult->numberOfTestsRun() !== 0) {
+            $this->simplePrinter->newLine(1);
+            $this->simplePrinter->writeln(self::TIME_AND_MEMORY_PLACEHOLDER);
+        }
 
+        // print failed tests
         if ($testResult->hasTestFailedEvents()) {
             $this->printListHeaderWithNumber($testResult->numberOfTestFailedEvents(), 'failure');
             $this->printTestFailedEvents($testResult->testFailedEvents());
         }
 
-        $summaryPrinter = new SummaryPrinter(DefaultPrinter::standardOutput(), true);
+        $summaryPrinter = new SummaryPrinter(DefaultPrinter::standardOutput(), false);
         $summaryPrinter->print($testResult);
     }
 
@@ -106,19 +115,19 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
      */
     private function createTitle(Test $test): string
     {
-        if ($test instanceof TestMethod) {
-            $shortClassName = ClassNaming::resolveShortClassName($test->className());
-
-            if (! $test->testData()->hasDataFromDataProvider()) {
-                return $shortClassName . '::' . $test->methodName();
-            }
-
-            $dataFromDataProvider = $test->testData()->dataFromDataProvider();
-            $dataProviderString = 'with data set #' . $dataFromDataProvider->dataSetName();
-
-            return $shortClassName . '::' . $test->methodName() . ' ' . $dataProviderString;
+        if (! $test instanceof TestMethod) {
+            return $test->name();
         }
 
-        return $test->name();
+        $shortClassName = ClassNaming::resolveShortClassName($test->className());
+
+        $title = $shortClassName . '::' . $test->methodName();
+
+        if ($test->testData()->hasDataFromDataProvider()) {
+            $dataFromDataProvider = $test->testData()->dataFromDataProvider();
+            $title .= ' with data set #' . $dataFromDataProvider->dataSetName();
+        }
+
+        return $title;
     }
 }
