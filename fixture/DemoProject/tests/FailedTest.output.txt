@@ -1,0 +1,14 @@
+PHPUnit 10.5.9
+
+F     1 / 1 (100%)
+
+Time: 00:00.782, Memory: 64.50 MB
+There was 1 failure:
+
+1) FailedTest::testFailed
+Failed asserting that false is true.
+
+FailedTest.php:11
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.

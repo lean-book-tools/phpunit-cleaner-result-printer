@@ -23,7 +23,7 @@ use PHPUnit\TextUI\Output\DefaultPrinter;
 /**
  * Registered in phpunit.xml
  */
-final class CleanerResultPrinterExtension implements Extension
+final readonly class CleanerResultPrinterExtension implements Extension
 {
     private SimplePrinter $simplePrinter;
 
