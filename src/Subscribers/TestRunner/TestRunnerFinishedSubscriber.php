@@ -9,6 +9,7 @@ use LeanBookTools\OutputCleaner;
 use LeanBookTools\Subscribers\AbstractSubscriber;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\TestRunner\Finished;
@@ -20,11 +21,6 @@ use ReflectionObject;
 
 final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements FinishedSubscriber
 {
-    /**
-     * @var string
-     */
-    private const TIME_AND_MEMORY_PLACEHOLDER = 'Time: 00:00.782, Memory: 64.50 MB';
-
     public function notify(Finished $event): void
     {
         $testResult = Facade::result();
@@ -44,7 +40,6 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
 
         if ($testResult->numberOfTestsRun() !== 0) {
             $this->simplePrinter->newLine();
-            $this->simplePrinter->writeln(self::TIME_AND_MEMORY_PLACEHOLDER);
         }
 
         // print failed tests
@@ -95,15 +90,15 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
     }
 
     /**
-     * @param Errored[] $testErroredEvents
+     * @param list<BeforeFirstTestMethodErrored|Errored> $events
      */
-    private function printTestErroredEvents(array $testErroredEvents): void
+    private function printTestErroredEvents(array $events): void
     {
         $i = 1;
 
-        foreach ($testErroredEvents as $testErroredEvent) {
-            $title = $this->createTitle($testErroredEvent->test());
-            $body = $testErroredEvent->throwable()->asString();
+        foreach ($events as $event) {
+            $title = $event instanceof Errored ? $this->createTitle($event->test()) : $event->testClassName();
+            $body = $event->throwable()->asString();
 
             $this->printListElement($i, $title, $body);
             $i++;
