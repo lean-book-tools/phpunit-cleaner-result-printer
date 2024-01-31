@@ -9,12 +9,14 @@ use LeanBookTools\OutputCleaner;
 use LeanBookTools\Subscribers\AbstractSubscriber;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\TestRunner\Finished;
 use PHPUnit\Event\TestRunner\FinishedSubscriber;
 use PHPUnit\TestRunner\TestResult\Facade;
 use PHPUnit\TextUI\Output\DefaultPrinter;
 use PHPUnit\TextUI\Output\SummaryPrinter;
+use ReflectionObject;
 
 final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements FinishedSubscriber
 {
@@ -29,18 +31,19 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
 
         // simple progress report
         if ($testResult->numberOfTestsRun() !== 0) {
-            $successTestCount = $testResult->numberOfTestsRun() - $testResult->numberOfTestErroredEvents();
+            $reflectionProperty = (new ReflectionObject($testResult))->getProperty('numberOfTests');
+            $totalNumberOfTests = $reflectionProperty->getValue($testResult);
 
             $this->simplePrinter->writeln(sprintf(
                 '     %d / %d (%.0f%%)',
-                $successTestCount,
                 $testResult->numberOfTestsRun(),
-                100 * ($successTestCount / $testResult->numberOfTestsRun())
+                $totalNumberOfTests,
+                100 * ($testResult->numberOfTestsRun() / $totalNumberOfTests)
             ));
         }
 
         if ($testResult->numberOfTestsRun() !== 0) {
-            $this->simplePrinter->newLine(1);
+            $this->simplePrinter->newLine();
             $this->simplePrinter->writeln(self::TIME_AND_MEMORY_PLACEHOLDER);
         }
 
@@ -48,6 +51,11 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
         if ($testResult->hasTestFailedEvents()) {
             $this->printListHeaderWithNumber($testResult->numberOfTestFailedEvents(), 'failure');
             $this->printTestFailedEvents($testResult->testFailedEvents());
+        }
+
+        if ($testResult->hasTestErroredEvents()) {
+            $this->printListHeaderWithNumber($testResult->numberOfTestErroredEvents(), 'error');
+            $this->printTestErroredEvents($testResult->testErroredEvents());
         }
 
         $summaryPrinter = new SummaryPrinter(DefaultPrinter::standardOutput(), false);
@@ -80,6 +88,22 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
         foreach ($testFailedEvents as $testFailedEvent) {
             $title = $this->createTitle($testFailedEvent->test());
             $body = $testFailedEvent->throwable()->asString();
+
+            $this->printListElement($i, $title, $body);
+            $i++;
+        }
+    }
+
+    /**
+     * @param Errored[] $testErroredEvents
+     */
+    private function printTestErroredEvents(array $testErroredEvents): void
+    {
+        $i = 1;
+
+        foreach ($testErroredEvents as $testErroredEvent) {
+            $title = $this->createTitle($testErroredEvent->test());
+            $body = $testErroredEvent->throwable()->asString();
 
             $this->printListElement($i, $title, $body);
             $i++;

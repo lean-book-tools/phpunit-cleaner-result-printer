@@ -35,6 +35,7 @@ final class EndToEndTest extends TestCase
     {
         yield ['SuccessfulTest'];
         yield ['FailedTest'];
+        yield ['ErrorTest'];
     }
 
     private function runPhpUnitWithCleanOutputForTest(string $testName): string
