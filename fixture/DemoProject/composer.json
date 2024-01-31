@@ -15,6 +15,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^10.5",
-        "lean-book-tools/phpunit-cleaner-result-printer": "dev-main"
+        "lean-book-tools/phpunit-cleaner-result-printer": "@dev"
     }
 }
