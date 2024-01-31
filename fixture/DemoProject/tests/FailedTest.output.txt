@@ -1,4 +1,4 @@
-PHPUnit 10.5.9
+PHPUnit
 
 F     1 / 1 (100%)
 
