@@ -10,6 +10,7 @@ use LeanBookTools\Subscribers\AbstractSubscriber;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
+use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\TestRunner\Finished;
@@ -51,6 +52,11 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
         if ($testResult->hasTestErroredEvents()) {
             $this->printListHeaderWithNumber($testResult->numberOfTestErroredEvents(), 'error');
             $this->printTestErroredEvents($testResult->testErroredEvents());
+        }
+
+        if ($testResult->hasTestConsideredRiskyEvents()) {
+            $this->printListHeaderWithNumber($testResult->numberOfTestsWithTestConsideredRiskyEvents(), 'risky test');
+            $this->printTestConsideredRiskyEvents($testResult->testConsideredRiskyEvents());
         }
 
         $summaryPrinter = new SummaryPrinter(DefaultPrinter::standardOutput(), false);
@@ -102,6 +108,24 @@ final class TestRunnerFinishedSubscriber extends AbstractSubscriber implements F
 
             $this->printListElement($i, $title, $body);
             $i++;
+        }
+    }
+
+    /**
+     * @param array<string,list<ConsideredRisky>> $events
+     */
+    private function printTestConsideredRiskyEvents(array $events): void
+    {
+        $i = 1;
+
+        foreach ($events as $elements) {
+            foreach ($elements as $element) {
+                $title = $this->createTitle($element->test());
+                $body = $element->message();
+
+                $this->printListElement($i, $title, $body);
+                $i++;
+            }
         }
     }
 
