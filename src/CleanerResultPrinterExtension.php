@@ -17,6 +17,7 @@ use PHPUnit\Logging\TestDox\TestResultCollector;
 use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
+use PHPUnit\TestRunner\IssueFilter;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Output\DefaultPrinter;
 
@@ -27,12 +28,9 @@ final readonly class CleanerResultPrinterExtension implements Extension
 {
     private SimplePrinter $simplePrinter;
 
-    private TestResultCollector $testResultCollector;
-
     public function __construct()
     {
         $this->simplePrinter = new SimplePrinter(DefaultPrinter::standardOutput());
-        $this->testResultCollector = new TestResultCollector(new EventFacade());
     }
 
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
@@ -41,20 +39,22 @@ final readonly class CleanerResultPrinterExtension implements Extension
             return;
         }
 
+        $testResultCollector = new TestResultCollector(new EventFacade(), new IssueFilter($configuration->source()));
+
         // very important to replace output with ours
         $facade->replaceOutput();
 
         $facade->registerSubscribers(
             // single test
-            new TestPreparedSubscriber($this->simplePrinter, $this->testResultCollector),
-            new TestFailedSubscriber($this->simplePrinter, $this->testResultCollector),
-            new TestErroredSubscriber($this->simplePrinter, $this->testResultCollector),
-            new TestFinishedSubscriber($this->simplePrinter, $this->testResultCollector),
-            new TestPassedSubscriber($this->simplePrinter, $this->testResultCollector),
+            new TestPreparedSubscriber($this->simplePrinter, $testResultCollector),
+            new TestFailedSubscriber($this->simplePrinter, $testResultCollector),
+            new TestErroredSubscriber($this->simplePrinter, $testResultCollector),
+            new TestFinishedSubscriber($this->simplePrinter, $testResultCollector),
+            new TestPassedSubscriber($this->simplePrinter, $testResultCollector),
 
             // test runner
-            new TestRunnerStartedSubscriber($this->simplePrinter, $this->testResultCollector),
-            new TestRunnerFinishedSubscriber($this->simplePrinter, $this->testResultCollector),
+            new TestRunnerStartedSubscriber($this->simplePrinter, $testResultCollector),
+            new TestRunnerFinishedSubscriber($this->simplePrinter, $testResultCollector),
         );
     }
 }
