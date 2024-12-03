@@ -4,3 +4,9 @@ parameters:
         - ./tests
 
     level: 8
+
+    ignoreErrors:
+        # false positive
+        -
+            message: '#Offset 0 does not exist on array\{0\?: string, 1\?: non-falsy-string, 2\?: (.*?)}#'
+            path: src/OutputCleaner.php
